@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TaskFlow.Api.DTOs.Entities;
+using TaskFlow.Api.Domain.Entities;
 using TaskFlow.Api.Infrastructure.Data;
 
 

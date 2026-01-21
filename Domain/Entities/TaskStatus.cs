@@ -1,4 +1,4 @@
-﻿namespace TaskFlow.Api.DTOs.Entities
+﻿namespace TaskFlow.Api.Domain.Entities
 {
     public enum TaskStatus
     {

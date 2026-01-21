@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TaskFlow.Api.DTOs.Entities;
+using TaskFlow.Api.Domain.Entities;
 
 namespace TaskFlow.Api.Infrastructure.Data
 {

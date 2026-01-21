@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace TaskFlow.Api.DTOs.Entities
+namespace TaskFlow.Api.Domain.Entities
 {
     public class User:IdentityUser
     {

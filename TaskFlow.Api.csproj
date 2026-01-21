@@ -22,7 +22,6 @@
     <Folder Include="Application\Interfaces\" />
     <Folder Include="Application\Services\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Domain\" />
     <Folder Include="Infrastructure\Identity\" />
   </ItemGroup>
 
