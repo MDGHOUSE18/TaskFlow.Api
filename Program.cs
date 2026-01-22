@@ -1,8 +1,10 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TaskFlow.Api.Application.Interfaces;
+using TaskFlow.Api.Application.Services;
 using TaskFlow.Api.Domain.Entities;
 using TaskFlow.Api.Infrastructure.Data;
 
@@ -32,6 +34,12 @@ builder.Services
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+
+// ✅ ADD YOUR SERVICE HERE
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 
