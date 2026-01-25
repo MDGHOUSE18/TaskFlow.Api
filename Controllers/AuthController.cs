@@ -7,7 +7,7 @@ namespace TaskFlow.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController:ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
 
@@ -19,28 +19,18 @@ namespace TaskFlow.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto requestDto)
         {
-            try
-            {
-                AuthResponseDto result =await _authService.LoginAsync(requestDto);
-                return Ok(result);
-            }catch (InvalidOperationException ex)
-            {
-                return BadRequest(ApiResponse<AuthResponseDto>.Fail(ex.Message));
-            }
+
+            AuthResponseDto result = await _authService.LoginAsync(requestDto);
+            return Ok(result);
+
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            try
-            {
-                var result = await _authService.RegisterAsync(request);
-                return Ok(ApiResponse<RegisterResponseDto>.Ok(result));
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ApiResponse<RegisterResponseDto>.Fail(ex.Message));
-            }
+            var result = await _authService.RegisterAsync(request);
+            return Ok(ApiResponse<RegisterResponseDto>.Ok(result));
+
         }
 
 

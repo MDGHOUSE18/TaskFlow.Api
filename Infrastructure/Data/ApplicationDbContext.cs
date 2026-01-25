@@ -13,6 +13,8 @@ namespace TaskFlow.Api.Infrastructure.Data
         public DbSet<IdentityUserLogin<string>> UserLogins { get; set; } = null!;
         public DbSet<IdentityUserToken<string>> UserTokens { get; set; } = null!;
         public DbSet<IdentityUserClaim<string>> UserClaims { get; set; } = null!;
+        public DbSet<ApplicationError> ApplicationErrors { get; set; } = null!;
+
 
         // Domain tables
         public DbSet<TaskItem> TaskItems { get; set; } = null!;
@@ -74,6 +76,31 @@ namespace TaskFlow.Api.Infrastructure.Data
                 entity.ToTable("UserClaims");
                 entity.HasKey(c => c.Id);
             });
+
+            builder.Entity<ApplicationError>(entity =>
+            {
+                entity.ToTable("ApplicationErrors");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Message)
+                      .IsRequired()
+                      .HasMaxLength(2000);
+
+                entity.Property(e => e.Source)
+                      .IsRequired()
+                      .HasMaxLength(500);
+
+                entity.Property(e => e.Path)
+                      .HasMaxLength(500);
+
+                entity.Property(e => e.UserId)
+                      .HasMaxLength(450);
+
+                entity.Property(e => e.CreatedAt)
+                      .IsRequired();
+            });
+
         }
 
 

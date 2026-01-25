@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TaskFlow.Api.Application.Interfaces;
 using TaskFlow.Api.Application.Services;
+using TaskFlow.Api.Common;
 using TaskFlow.Api.Domain.Entities;
 using TaskFlow.Api.Infrastructure.Data;
 
@@ -107,6 +108,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
