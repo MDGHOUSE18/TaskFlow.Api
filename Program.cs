@@ -75,6 +75,7 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = jwtSettings["Key"];
 
 builder.Services.AddAuthentication(options =>
 {
@@ -93,7 +94,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
+            Encoding.UTF8.GetBytes(key!))
     };
 });
 
