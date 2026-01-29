@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json;
 using TaskFlow.Api.Application.Interfaces;
 using TaskFlow.Api.Application.Services;
 using TaskFlow.Api.Common;
 using TaskFlow.Api.Domain.Entities;
+using TaskFlow.Api.DTOs.Auth;
 using TaskFlow.Api.Infrastructure.Data;
 
 
@@ -15,7 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = false;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -23,7 +28,11 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "TaskFlow",
-        Version = "v1"
+        Version = "v1",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Mahammed Ghouse"
+        }
     });
 
     // Define the security scheme for Bearer tokens in Swagger
@@ -96,17 +105,54 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(key!))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+            context.HandleResponse();
+
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync(
+                JsonSerializer.Serialize(
+                    ApiResponse<string>.Fail("Unauthorized access")
+                )
+            );
+        },
+
+        OnForbidden = context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync(
+                JsonSerializer.Serialize(
+                    ApiResponse<string>.Fail("You do not have permission to access this resource")
+                )
+            );
+        }
+    };
 });
 
 
 var app = builder.Build();
 
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    db.Database.Migrate();
+//}
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

@@ -21,20 +21,37 @@ namespace TaskFlow.Api.Common
 
         public async Task InvokeAsync(HttpContext context)
         {
+            //    try
+            //    {
+            //        await _next(context);
+            //    }
+            //    catch (InvalidOperationException ex)
+            //    {
+            //        var message = _environment.IsDevelopment()
+            //? ex.Message
+            //: "An unexpected error occurred.";
+            //        await HandleExceptionAsync(
+            //            context,
+            //            HttpStatusCode.BadRequest,
+            //            message);
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        await LogExceptionAsync(context, ex);
+
+            //        var message = _environment.IsDevelopment()
+            //            ? ex.Message
+            //            : "An unexpected error occurred.";
+
+            //        await HandleExceptionAsync(
+            //            context,
+            //            HttpStatusCode.InternalServerError,
+            //            message);
+            //    }
             try
             {
                 await _next(context);
-            }
-            catch (InvalidOperationException ex)
-            {
-                var message = _environment.IsDevelopment()
-        ? ex.Message
-        : "An unexpected error occurred.";
-                await HandleExceptionAsync(
-                    context,
-                    HttpStatusCode.BadRequest,
-                    message);
-
             }
             catch (Exception ex)
             {
@@ -44,10 +61,14 @@ namespace TaskFlow.Api.Common
                     ? ex.Message
                     : "An unexpected error occurred.";
 
-                await HandleExceptionAsync(
-                    context,
-                    HttpStatusCode.InternalServerError,
-                    message);
+                context.Response.StatusCode = 500;
+                context.Response.ContentType = "application/json";
+
+                await context.Response.WriteAsync(
+                    JsonSerializer.Serialize(
+                        ApiResponse<string>.Fail(message)
+                    )
+                );
             }
 
         }
