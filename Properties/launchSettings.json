@@ -5,9 +5,9 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "Jwt__Key": "444018089a2e8a93c24eea465beb9a7b0bf27d1ec21950d04f1726da049162380980977d",
-        "ConnectionStrings__DefaultConnection": "Server=(localdb)\\\\MSSQLLocalDB;Database=TASKFLOW_LOCAL;Trusted_Connection=True;MultipleActiveResultSets=true"
+        "ConnectionStrings__DefaultConnection": "Server=db39307.public.databaseasp.net,1433;Database=db39307;User Id=db39307;Password=\"n-3C_4ZdT+a7\";Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5035"

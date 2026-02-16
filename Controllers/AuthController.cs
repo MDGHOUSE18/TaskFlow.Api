@@ -16,22 +16,28 @@ namespace TaskFlow.Api.Controllers
             _authService = authService;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto requestDto)
-        {
-
-            AuthResponseDto result = await _authService.LoginAsync(requestDto);
-            return Ok(result);
-
-        }
-
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
+        public async Task<IActionResult> Register(RegisterRequestDto request)
         {
             var result = await _authService.RegisterAsync(request);
-            return Ok(ApiResponse<RegisterResponseDto>.Ok(result));
 
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequestDto request)
+        {
+            var result = await _authService.LoginAsync(request);
+
+            if (!result.Success)
+                return Unauthorized(result);
+
+            return Ok(result);
+        }
+
 
 
 
